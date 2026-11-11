@@ -136,14 +136,14 @@ device, which keeps its data when the visitor signs up later.
 
 ### Bundler config
 
-There is no Jazz plugin to add. In development, run your app as usual: `createJazz` in your
-[main backend](/docs/how-jazz-works#how-a-backend-talks-to-jazz) is the dev server, and it publishes your schema, permissions
+In development, `createJazz` in your
+[main backend](/docs/how-jazz-works#how-a-backend-talks-to-jazz) publishes your schema, permissions,
 and migrations every time it starts.
 
-The local-first client loads Jazz's Wasm in the browser, and a Next.js backend loads Jazz's native
-module (`jazz-napi`) on the server. Tell your bundler to leave them alone:
+The local-first client loads Jazz's Wasm in the browser. The bundler settings depend on your
+framework.
 
-<Tabs groupId="jazz-bundler" items={["Vite", "Next.js"]} persist updateAnchor>
+<Tabs groupId="jazz-bundler" items={["Vite", "Next.js", "Expo Metro"]} persist updateAnchor>
   <Tab value="Vite">
     ```ts title="vite.config.ts"
     import { defineConfig } from "vite";
@@ -176,6 +176,26 @@ module (`jazz-napi`) on the server. Tell your bundler to leave them alone:
 
     export default nextConfig;
     ```
+
+  </Tab>
+  <Tab value="Expo Metro">
+    Wrap Expo's default Metro config with `withJazzMetro`.
+
+    ```js title="metro.config.cjs"
+    const { getDefaultConfig } = require("expo/metro-config");
+    const { withJazzMetro } = require("jazz-tools/metro");
+
+    module.exports = withJazzMetro(getDefaultConfig(__dirname));
+    ```
+
+    Use the browser provider from `jazz-tools/react` with the local-first loader in your web
+    entry. Run `npx expo start --web` or `npx expo export --platform web` as usual. The helper
+    serves the matching Wasm and worker in development and includes them in the web export
+    under versioned URLs. Explicit `runtimeSources` on the client take precedence.
+
+    This setup was verified with Expo SDK 58, `web.output: "single"`, and the app served at
+    the origin root. Keep the page, auth routes, and `/jazz` on the
+    [same origin](/docs/setup/deployment/own-server#proxies-paths-and-origins).
 
   </Tab>
 </Tabs>

@@ -1150,6 +1150,6 @@ describe("broker SharedWorker construction", () => {
       }
     }
 
-    expect(sites).toEqual([expect.stringMatching(/browser-shared-worker-connection\.ts$/)]);
+    expect(sites).toEqual([expect.stringMatching(/browser-worker-assets\.ts$/)]);
   });
 });

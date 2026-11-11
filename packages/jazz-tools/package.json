@@ -59,6 +59,10 @@
       "types": "./dist/local-first/index.d.ts",
       "default": "./dist/local-first/index.js"
     },
+    "./metro": {
+      "types": "./dist/metro/index.d.ts",
+      "node": "./dist/metro/index.js"
+    },
     "./react": {
       "types": "./dist/react/index.d.ts",
       "default": "./dist/react/index.js"

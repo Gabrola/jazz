@@ -3,6 +3,7 @@ import {
   resolveBrowserWorkerRuntimeSources,
   resolveBrowserWorkerUrl,
 } from "../browser-worker-config.js";
+import { createBundledBrowserWorker } from "../browser-worker-assets.js";
 import {
   BrowserWorkerUnresponsiveError,
   deserializeBrowserRelayError,
@@ -36,9 +37,9 @@ import { toError } from "../util.js";
  * SharedWorker realm, and a realm is keyed by script URL plus name. webpack 5
  * emits a separate worker chunk (with a distinct URL) for every
  * `new SharedWorker(new URL(..., import.meta.url))` expression it finds, so
- * two such expressions put the lease and the runtime in different realms and
- * the runtime never starts. Keep exactly one statically analyzable
- * construction here so every bundler emits a single broker worker chunk.
+ * two such expressions put the lease and the runtime in different realms.
+ * The browser asset module owns the single static construction, and its
+ * React Native counterpart has no worker entry for Metro to collect.
  */
 function createBrokerSharedWorker(
   runtimeSources: BrowserWorkerInitOptions["runtimeSources"],
@@ -47,10 +48,7 @@ function createBrokerSharedWorker(
   if (runtimeSources?.brokerWorkerUrl || runtimeSources?.baseUrl || runtimeSources?.wasmVersion) {
     return new SharedWorker(resolveBrowserWorkerUrl(runtimeSources), { type: "module", name });
   }
-  return new SharedWorker(new URL("../../worker/jazz-broker-worker.js", import.meta.url), {
-    type: "module",
-    name,
-  });
+  return createBundledBrowserWorker(name);
 }
 
 export type BrowserForegroundNodeLeaseOptions = Pick<

@@ -3,7 +3,7 @@ title: React Native
 description: "Learn how to use Jazz from React Native and Expo apps."
 ---
 
-React Native and Expo are supported as an alpha through `jazz-tools/react-native` and the direct `jazz-rn` native dependency. Use a matching development or release build: Expo Go is unsupported, and so is Expo web (it renders a blank page). For the web, build a separate app with the [web client](/docs/setup/web-client/thin-client).
+React Native and Expo are supported as an alpha through `jazz-tools/react-native` and the direct `jazz-rn` native dependency. Use a matching development or release build. Expo Go cannot load the native relay.
 
 ## Setup
 
@@ -20,6 +20,14 @@ function App() {
   );
 }
 ```
+
+### Expo web
+
+One Expo project can use Jazz’s browser provider from `jazz-tools/react` in a `.web.tsx` entry
+and its native provider from `jazz-tools/expo` in a `.native.tsx` entry. Both entries can
+render the same screens and share a schema. The browser uses the [thin client](/docs/setup/web-client/thin-client)
+by default. For local-first web, see the [Expo Metro setup](/docs/setup/web-client/local-first-client#bundler-config)
+for the Wasm and worker.
 
 ### Install
 
