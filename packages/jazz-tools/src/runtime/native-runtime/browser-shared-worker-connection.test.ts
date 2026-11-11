@@ -1121,6 +1121,9 @@ describe("broker SharedWorker construction", () => {
     // foreground lease and the runtime connection must share one SharedWorker
     // realm (keyed by URL + name), so a second construction site silently
     // splits them and the runtime never starts under webpack.
+    // The site is the module React Native replaces (package.json's
+    // `react-native` field): Expo's Metro bundles a worker chunk for the same
+    // expression on every platform whose graph holds it.
     const { readdir, readFile } = await import("node:fs/promises");
     const { join } = await import("node:path");
     const { fileURLToPath } = await import("node:url");
@@ -1150,6 +1153,6 @@ describe("broker SharedWorker construction", () => {
       }
     }
 
-    expect(sites).toEqual([expect.stringMatching(/browser-shared-worker-connection\.ts$/)]);
+    expect(sites).toEqual([expect.stringMatching(/runtime[\\/]browser-worker-assets\.ts$/)]);
   });
 });

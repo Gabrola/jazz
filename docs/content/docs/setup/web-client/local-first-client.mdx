@@ -136,14 +136,14 @@ device, which keeps its data when the visitor signs up later.
 
 ### Bundler config
 
-There is no Jazz plugin to add. In development, run your app as usual: `createJazz` in your
+There is no Jazz plugin to add for Vite or Next.js. In development, run your app as usual: `createJazz` in your
 [main backend](/docs/how-jazz-works#how-a-backend-talks-to-jazz) is the dev server, and it publishes your schema, permissions
 and migrations every time it starts.
 
 The local-first client loads Jazz's Wasm in the browser, and a Next.js backend loads Jazz's native
 module (`jazz-napi`) on the server. Tell your bundler to leave them alone:
 
-<Tabs groupId="jazz-bundler" items={["Vite", "Next.js"]} persist updateAnchor>
+<Tabs groupId="jazz-bundler" items={["Vite", "Next.js", "Expo web"]} persist updateAnchor>
   <Tab value="Vite">
     ```ts title="vite.config.ts"
     import { defineConfig } from "vite";
@@ -176,6 +176,19 @@ module (`jazz-napi`) on the server. Tell your bundler to leave them alone:
 
     export default nextConfig;
     ```
+
+  </Tab>
+  <Tab value="Expo web">
+    ```js title="metro.config.js"
+    const { getDefaultConfig } = require("expo/metro-config");
+    const { withJazzMetro } = require("jazz-tools/metro");
+
+    // Metro serves and exports Jazz's Wasm and shared worker on the web platform.
+    module.exports = withJazzMetro(getDefaultConfig(__dirname));
+    ```
+
+    Metro does not find the Wasm and the worker on its own. The helper changes the web platform
+    only; see [Expo web](/docs/setup/react-native#expo-web).
 
   </Tab>
 </Tabs>

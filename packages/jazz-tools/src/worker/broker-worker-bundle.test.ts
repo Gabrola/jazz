@@ -36,6 +36,9 @@ describe("broker worker packaging", () => {
       expect(source).not.toMatch(/\bfrom\s*["']\.\.?\//);
       expect(source).not.toMatch(/\bimport\s*\(\s*["']\.\.?\//);
       expect(source).toMatch(/onconnect/);
+      // The worker shares modules with the page that starts it. A worker
+      // construction left in here would have bundlers build a worker for the worker.
+      expect(source).not.toMatch(/new (?:Shared)?Worker\(/);
       // The cancellation-race scheduler belongs to the browser test entry,
       // not a same-origin client-visible production worker protocol.
       expect(source).not.toContain("foreground-node-lease-test-allocated");

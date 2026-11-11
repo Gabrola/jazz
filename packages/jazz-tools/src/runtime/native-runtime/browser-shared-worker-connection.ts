@@ -3,6 +3,7 @@ import {
   resolveBrowserWorkerRuntimeSources,
   resolveBrowserWorkerUrl,
 } from "../browser-worker-config.js";
+import { createBundledBrokerWorker } from "../browser-worker-assets.js";
 import {
   BrowserWorkerUnresponsiveError,
   deserializeBrowserRelayError,
@@ -30,27 +31,23 @@ import { waitForInspectorOpening } from "./inspector-control-lifecycle.js";
 import { toError } from "../util.js";
 
 /**
- * The only place the broker SharedWorker is constructed.
+ * Start the broker SharedWorker for these runtime sources.
  *
- * The foreground lease and the runtime connection must attach to the same
- * SharedWorker realm, and a realm is keyed by script URL plus name. webpack 5
- * emits a separate worker chunk (with a distinct URL) for every
- * `new SharedWorker(new URL(..., import.meta.url))` expression it finds, so
- * two such expressions put the lease and the runtime in different realms and
- * the runtime never starts. Keep exactly one statically analyzable
- * construction here so every bundler emits a single broker worker chunk.
+ * The app's own worker URL is a module script the app serves. Otherwise the
+ * worker is the one the bundler built, which `browser-worker-assets` starts
+ * from the single construction a bundler can see.
  */
 function createBrokerSharedWorker(
   runtimeSources: BrowserWorkerInitOptions["runtimeSources"],
   name: string,
 ): SharedWorker {
-  if (runtimeSources?.brokerWorkerUrl || runtimeSources?.baseUrl || runtimeSources?.wasmVersion) {
+  if (runtimeSources?.brokerWorkerUrl || runtimeSources?.baseUrl) {
     return new SharedWorker(resolveBrowserWorkerUrl(runtimeSources), { type: "module", name });
   }
-  return new SharedWorker(new URL("../../worker/jazz-broker-worker.js", import.meta.url), {
-    type: "module",
+  return createBundledBrokerWorker(
     name,
-  });
+    runtimeSources?.wasmVersion ? resolveBrowserWorkerUrl(runtimeSources) : undefined,
+  );
 }
 
 export type BrowserForegroundNodeLeaseOptions = Pick<

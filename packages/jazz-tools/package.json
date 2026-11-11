@@ -145,6 +145,10 @@
       "react-native": "./dist/expo/polyfills.js",
       "default": "./dist/expo/polyfills.js"
     },
+    "./metro": {
+      "types": "./dist/metro/index.d.ts",
+      "default": "./dist/metro/index.js"
+    },
     "./passphrase": {
       "types": "./dist/passphrase.d.ts",
       "default": "./dist/passphrase.js"
