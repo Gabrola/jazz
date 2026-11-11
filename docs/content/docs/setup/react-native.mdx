@@ -136,9 +136,9 @@ shared worker. Metro finds them through Jazz's Metro helper:
 
 ```js title="metro.config.js"
 const { getDefaultConfig } = require("expo/metro-config");
-const { withJazzMetro } = require("jazz-tools/metro");
+const { withJazz } = require("jazz-tools/metro");
 
-module.exports = withJazzMetro(getDefaultConfig(__dirname));
+module.exports = withJazz(getDefaultConfig(__dirname));
 ```
 
 Restart Metro with `npx expo start --clear` after adding it. Metro then serves both files in
@@ -148,7 +148,7 @@ platform only: iOS and Android bundles contain neither file, with or without it.
 loads neither, so it needs no Metro setup.
 
 Without the helper, the local-first client fails to start on Expo web with an error that names
-`withJazzMetro`.
+`withJazz`.
 
 ## Sign in through your backend
 

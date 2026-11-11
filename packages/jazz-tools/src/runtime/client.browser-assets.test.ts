@@ -182,7 +182,7 @@ describe("loadWasmModule runtimeSources bootstrap", () => {
   });
 
   it("loads the binary from the URL a bundler names for it", async () => {
-    // Metro with withJazzMetro: the binary is a Metro asset, and wasm-bindgen's
+    // Metro with withJazz: the binary is a Metro asset, and wasm-bindgen's
     // own URL for it would be a 404.
     setBrowserLikeProcess();
     (globalThis as Record<string, unknown>).location = { href: "http://localhost:8081/" };
@@ -213,14 +213,14 @@ describe("loadWasmModule runtimeSources bootstrap", () => {
   });
 
   it("names the Metro setup instead of requesting a binary Metro did not bundle", async () => {
-    // Metro without withJazzMetro: wasm-bindgen would ask for the binary beside
+    // Metro without withJazz: wasm-bindgen would ask for the binary beside
     // the bundle, where nothing serves it.
     setBrowserLikeProcess();
     (globalThis as Record<string, unknown>).location = { href: "http://localhost:8081/" };
     (globalThis as Record<string, unknown>).__METRO_GLOBAL_PREFIX__ = "";
 
     await expect(loadWasmModule()).rejects.toThrow(
-      "wrap your Metro config in withJazzMetro from jazz-tools/metro",
+      "wrap your Metro config in withJazz from jazz-tools/metro",
     );
     expect(wasmDefaultInit).not.toHaveBeenCalled();
   });

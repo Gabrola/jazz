@@ -2,7 +2,7 @@ import { mkdirSync, mkdtempSync, rmSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { afterAll, describe, expect, it, vi } from "vitest";
-import { withJazzMetro } from "./index.js";
+import { withJazz } from "./index.js";
 
 // An installed jazz-tools as Metro resolves it: the browser asset module with
 // its Metro counterpart beside it.
@@ -21,25 +21,25 @@ function metroContext(filePath: string) {
 }
 
 function resolveWith(
-  config: Parameters<typeof withJazzMetro>[0],
+  config: Parameters<typeof withJazz>[0],
   filePath: string,
   platform: string | null,
 ) {
-  const { resolveRequest } = withJazzMetro(config).resolver as {
+  const { resolveRequest } = withJazz(config).resolver as {
     resolveRequest: (context: unknown, moduleName: string, platform: string | null) => unknown;
   };
   return resolveRequest(metroContext(filePath), "./browser-worker-assets.js", platform);
 }
 
-describe("withJazzMetro", () => {
+describe("withJazz", () => {
   it("lets Metro serve and export the WASM binary as an asset", () => {
-    const config = withJazzMetro({ resolver: { assetExts: ["png", "ttf"] } });
+    const config = withJazz({ resolver: { assetExts: ["png", "ttf"] } });
     expect(config.resolver.assetExts).toEqual(["png", "ttf", "wasm"]);
   });
 
   it("keeps an asset list that already has wasm, and the rest of the config", () => {
     const assetExts = ["png", "wasm"];
-    const config = withJazzMetro({
+    const config = withJazz({
       projectRoot: "/app",
       resolver: { assetExts, sourceExts: ["ts"] },
     });
@@ -81,7 +81,7 @@ describe("withJazzMetro", () => {
       filePath: standardAssets,
     }));
     const context = metroContext("/unused");
-    const { resolveRequest } = withJazzMetro({ resolver: { resolveRequest: upstream } }).resolver;
+    const { resolveRequest } = withJazz({ resolver: { resolveRequest: upstream } }).resolver;
 
     expect(resolveRequest!(context, "jazz-tools", "web")).toEqual({
       type: "sourceFile",
@@ -92,7 +92,7 @@ describe("withJazzMetro", () => {
   });
 
   it("can wrap a config twice", () => {
-    const config = withJazzMetro(withJazzMetro({ resolver: { assetExts: ["png"] } }));
+    const config = withJazz(withJazz({ resolver: { assetExts: ["png"] } }));
     expect(config.resolver.assetExts).toEqual(["png", "wasm"]);
     expect(resolveWith(config, standardAssets, "web")).toEqual({
       type: "sourceFile",

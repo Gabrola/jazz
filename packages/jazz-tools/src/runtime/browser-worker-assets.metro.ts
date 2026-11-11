@@ -1,13 +1,13 @@
 /**
  * Expo web takes this module in place of `browser-worker-assets.ts`, through
- * `withJazzMetro` from `jazz-tools/metro`. See that module for the exports.
+ * `withJazz` from `jazz-tools/metro`. See that module for the exports.
  *
  * Metro does not follow `new URL(..., import.meta.url)`, and Expo rewrites
  * `new SharedWorker(new URL(...))` into a dedicated Worker. So both assets go
  * through Metro's own graph here, which serves them in development and writes
  * them to an export under content-hashed names:
  * - the worker as a worker chunk, started as a real SharedWorker;
- * - the WASM as an asset (`withJazzMetro` adds `wasm` to `assetExts`).
+ * - the WASM as an asset (`withJazz` adds `wasm` to `assetExts`).
  */
 
 // Metro's module-scoped `require`. `unstable_resolveWorker` is how Expo names

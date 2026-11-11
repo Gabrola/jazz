@@ -181,10 +181,10 @@ module (`jazz-napi`) on the server. Tell your bundler to leave them alone:
   <Tab value="Expo web">
     ```js title="metro.config.js"
     const { getDefaultConfig } = require("expo/metro-config");
-    const { withJazzMetro } = require("jazz-tools/metro");
+    const { withJazz } = require("jazz-tools/metro");
 
     // Metro serves and exports Jazz's Wasm and shared worker on the web platform.
-    module.exports = withJazzMetro(getDefaultConfig(__dirname));
+    module.exports = withJazz(getDefaultConfig(__dirname));
     ```
 
     Metro does not find the Wasm and the worker on its own. The helper changes the web platform

@@ -48,7 +48,7 @@ describe("browser worker asset modules", () => {
   });
 
   it("refuse a bundler that starts the broker as a dedicated worker", () => {
-    // What Expo's Metro makes of the SharedWorker expression without withJazzMetro.
+    // What Expo's Metro makes of the SharedWorker expression without withJazz.
     const terminate = vi.fn();
     vi.stubGlobal(
       "SharedWorker",
@@ -58,7 +58,7 @@ describe("browser worker asset modules", () => {
     );
 
     expect(() => standard.createBundledBrokerWorker("jazz-runtime:test")).toThrow(
-      "wrap your Metro config in withJazzMetro from jazz-tools/metro",
+      "wrap your Metro config in withJazz from jazz-tools/metro",
     );
     expect(terminate).toHaveBeenCalledOnce();
   });

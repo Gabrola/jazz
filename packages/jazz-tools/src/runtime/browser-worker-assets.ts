@@ -10,7 +10,7 @@ import { METRO_SETUP_ERROR } from "./metro-setup-error.js";
  *   `react-native` field of package.json. Expo's Metro turns every
  *   `new SharedWorker(new URL(...))` it bundles into a worker chunk, so the
  *   literal below must stay out of the iOS and Android graphs.
- * - `browser-worker-assets.metro.ts` on Expo web, through `withJazzMetro` from
+ * - `browser-worker-assets.metro.ts` on Expo web, through `withJazz` from
  *   `jazz-tools/metro`.
  */
 export function browserRuntimeModuleUrl(): string {
