@@ -8,6 +8,11 @@
  * them to an export under content-hashed names:
  * - the worker as a worker chunk, started as a real SharedWorker;
  * - the WASM as an asset (`withJazz` adds `wasm` to `assetExts`).
+ *
+ * The chunk is the shipped worker. Expo compiles its `import.meta` to a
+ * registry that worker chunks do not have, so the worker must not read
+ * `import.meta.url` here: the page hands it the WASM URL, and the loader asks
+ * for its own module's URL only when it has none.
  */
 
 // Metro's module-scoped `require`. `unstable_resolveWorker` is how Expo names
@@ -30,7 +35,7 @@ export function browserRuntimeModuleUrl(): string {
   return location.href;
 }
 export function bundledBrowserWorkerUrl(): string {
-  return pageUrl(require.unstable_resolveWorker("../worker/jazz-broker-worker.metro.js"));
+  return pageUrl(require.unstable_resolveWorker("../worker/jazz-broker-worker.js"));
 }
 
 /** The binary shipped beside the worker, which is the pair the worker's glue was checked against. */

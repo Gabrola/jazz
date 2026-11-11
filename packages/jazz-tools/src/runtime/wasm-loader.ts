@@ -74,7 +74,7 @@ async function initializeWasmModule(runtime?: RuntimeSourcesConfig): Promise<Was
     // binary (Metro) names its URL for it instead.
     const wasmUrl =
       typeof location !== "undefined"
-        ? (resolveRuntimeConfigWasmUrl(browserRuntimeModuleUrl(), location.href, runtime) ??
+        ? (resolveRuntimeConfigWasmUrl(browserRuntimeModuleUrl, location.href, runtime) ??
           bundledWasmUrl())
         : null;
     if (wasmUrl) await initializeWasmFromUrl(wasmModule, wasmUrl);
