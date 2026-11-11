@@ -1,6 +1,6 @@
 /**
  * Expo web takes this module in place of `browser-worker-assets.ts`, through
- * `withJazz` from `jazz-tools/metro`. See that module for the exports.
+ * `withJazz` from `jazz-tools/expo/metro`. See that module for the exports.
  *
  * Metro does not follow `new URL(..., import.meta.url)`, and Expo rewrites
  * `new SharedWorker(new URL(...))` into a dedicated Worker. So both assets go

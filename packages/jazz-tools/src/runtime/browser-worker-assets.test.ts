@@ -58,7 +58,7 @@ describe("browser worker asset modules", () => {
     );
 
     expect(() => standard.createBundledBrokerWorker("jazz-runtime:test")).toThrow(
-      "wrap your Metro config in withJazz from jazz-tools/metro",
+      "wrap your Metro config in withJazz from jazz-tools/expo/metro",
     );
     expect(terminate).toHaveBeenCalledOnce();
   });

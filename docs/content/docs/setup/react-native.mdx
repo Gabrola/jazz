@@ -3,7 +3,7 @@ title: React Native
 description: "Learn how to use Jazz from React Native and Expo apps."
 ---
 
-React Native and Expo are supported as an alpha through `jazz-tools/react-native` and the direct `jazz-rn` native dependency. Use a matching development or release build: Expo Go is unsupported. These entries run only in iOS and Android builds; an app that also targets the web uses the web client there, as in [Expo web](#expo-web).
+React Native and Expo are supported as an alpha through `jazz-tools/react-native` and the direct `jazz-rn` native dependency. Use a matching development or release build: Expo Go is unsupported. On Expo web, use the [web client](/docs/setup/web-client/thin-client) from `jazz-tools/react` in `.web.tsx` files; its local-first client needs the [Expo Metro config](/docs/setup/web-client/local-first-client#bundler-config).
 
 ## Setup
 
@@ -124,31 +124,6 @@ Some bundlers and runtimes cannot automatically resolve Jazz's Wasm and worker a
 
 </Accordion>
 </Accordions>
-
-## Expo web
-
-`jazz-tools/expo` and `jazz-tools/react-native` refuse the web target. In an app that also builds
-for the web, import the [web client](/docs/setup/web-client/thin-client) from `jazz-tools/react` in
-`.web.tsx` platform files, next to the native files that import `jazz-tools/expo`.
-
-The [local-first web client](/docs/setup/web-client/local-first-client) loads Jazz's Wasm and a
-shared worker. Metro finds them through Jazz's Metro helper:
-
-```js title="metro.config.js"
-const { getDefaultConfig } = require("expo/metro-config");
-const { withJazz } = require("jazz-tools/metro");
-
-module.exports = withJazz(getDefaultConfig(__dirname));
-```
-
-Restart Metro with `npx expo start --clear` after adding it. Metro then serves both files in
-development and includes them in the output of `npx expo export --platform web` under
-content-hashed names, so there is nothing to copy into `public/`. The helper changes the web
-platform only: iOS and Android bundles contain neither file, with or without it. The thin client
-loads neither, so it needs no Metro setup.
-
-Without the helper, the local-first client fails to start on Expo web with an error that names
-`withJazz`.
 
 ## Sign in through your backend
 

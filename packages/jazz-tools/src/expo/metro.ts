@@ -1,11 +1,14 @@
 /**
- * `jazz-tools/metro`: Metro configuration for Jazz's browser client on Expo web.
+ * `jazz-tools/expo/metro`: Metro configuration for Jazz's browser client on Expo web.
  *
  * Metro does not follow `new URL(..., import.meta.url)`, which is how other
  * bundlers find Jazz's WASM and SharedWorker, and Expo rewrites
  * `new SharedWorker(new URL(...))` into a dedicated Worker. `withJazz`
  * routes both assets through Metro's own graph instead, on the web platform
  * only. iOS and Android bundles are not changed.
+ *
+ * It needs Expo's Metro config (`expo/metro-config`): the worker is an Expo
+ * worker chunk, which Metro alone does not build.
  */
 import { existsSync } from "node:fs";
 
@@ -37,7 +40,7 @@ function metroAssetsModule(filePath: string | undefined): string | null {
  * ```js
  * // metro.config.js
  * const { getDefaultConfig } = require("expo/metro-config");
- * const { withJazz } = require("jazz-tools/metro");
+ * const { withJazz } = require("jazz-tools/expo/metro");
  *
  * module.exports = withJazz(getDefaultConfig(__dirname));
  * ```

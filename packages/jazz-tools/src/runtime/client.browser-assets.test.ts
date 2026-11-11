@@ -220,7 +220,7 @@ describe("loadWasmModule runtimeSources bootstrap", () => {
     (globalThis as Record<string, unknown>).__METRO_GLOBAL_PREFIX__ = "";
 
     await expect(loadWasmModule()).rejects.toThrow(
-      "wrap your Metro config in withJazz from jazz-tools/metro",
+      "wrap your Metro config in withJazz from jazz-tools/expo/metro",
     );
     expect(wasmDefaultInit).not.toHaveBeenCalled();
   });

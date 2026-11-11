@@ -143,7 +143,7 @@ and migrations every time it starts.
 The local-first client loads Jazz's Wasm in the browser, and a Next.js backend loads Jazz's native
 module (`jazz-napi`) on the server. Tell your bundler to leave them alone:
 
-<Tabs groupId="jazz-bundler" items={["Vite", "Next.js", "Expo web"]} persist updateAnchor>
+<Tabs groupId="jazz-bundler" items={["Vite", "Next.js", "Expo"]} persist updateAnchor>
   <Tab value="Vite">
     ```ts title="vite.config.ts"
     import { defineConfig } from "vite";
@@ -178,22 +178,23 @@ module (`jazz-napi`) on the server. Tell your bundler to leave them alone:
     ```
 
   </Tab>
-  <Tab value="Expo web">
+  <Tab value="Expo">
     ```js title="metro.config.js"
     const { getDefaultConfig } = require("expo/metro-config");
-    const { withJazz } = require("jazz-tools/metro");
+    const { withJazz } = require("jazz-tools/expo/metro");
 
-    // Metro serves and exports Jazz's Wasm and shared worker on the web platform.
+    // Metro doesn't find Jazz's Wasm and worker on its own.
     module.exports = withJazz(getDefaultConfig(__dirname));
     ```
 
-    Metro does not find the Wasm and the worker on its own. The helper changes the web platform
-    only; see [Expo web](/docs/setup/react-native#expo-web).
+    This is for the web target of an Expo app. After adding it, start Metro with
+    `npx expo start --clear`.
 
   </Tab>
 </Tabs>
 
-The [thin client](/docs/setup/web-client/thin-client) has no Wasm, so it needs no Vite line. A
+The [thin client](/docs/setup/web-client/thin-client) has no Wasm, so it needs no Vite line or
+Metro config. A
 Next.js app that imports `jazz-tools/backend` still needs `serverExternalPackages`.
 
 ### Wasm loading

@@ -11,7 +11,7 @@ import { METRO_SETUP_ERROR } from "./metro-setup-error.js";
  *   `new SharedWorker(new URL(...))` it bundles into a worker chunk, so the
  *   literal below must stay out of the iOS and Android graphs.
  * - `browser-worker-assets.metro.ts` on Expo web, through `withJazz` from
- *   `jazz-tools/metro`.
+ *   `jazz-tools/expo/metro`.
  */
 export function browserRuntimeModuleUrl(): string {
   return import.meta.url;

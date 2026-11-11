@@ -1,8 +1,8 @@
-import { mkdirSync, mkdtempSync, rmSync, writeFileSync } from "node:fs";
+import { mkdirSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { afterAll, describe, expect, it, vi } from "vitest";
-import { withJazz } from "./index.js";
+import { withJazz } from "./metro.js";
 
 // An installed jazz-tools as Metro resolves it: the browser asset module with
 // its Metro counterpart beside it.
@@ -32,6 +32,16 @@ function resolveWith(
 }
 
 describe("withJazz", () => {
+  it("is published as jazz-tools/expo/metro", () => {
+    const packageJson = JSON.parse(
+      readFileSync(new URL("../../package.json", import.meta.url), "utf8"),
+    ) as { exports: Record<string, unknown> };
+    expect(packageJson.exports["./expo/metro"]).toEqual({
+      types: "./dist/expo/metro.d.ts",
+      default: "./dist/expo/metro.js",
+    });
+  });
+
   it("lets Metro serve and export the WASM binary as an asset", () => {
     const config = withJazz({ resolver: { assetExts: ["png", "ttf"] } });
     expect(config.resolver.assetExts).toEqual(["png", "ttf", "wasm"]);
